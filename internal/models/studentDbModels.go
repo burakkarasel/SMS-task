@@ -4,6 +4,7 @@ type CreateStudentParams struct {
 	FullName   string
 	Year       int
 	Department string
+	Email      string
 }
 
 type UpdateStudentParams struct {
@@ -11,6 +12,7 @@ type UpdateStudentParams struct {
 	FullName   string
 	Year       int
 	Department string
+	Email      string
 }
 
 type ListStudentsParams struct {
