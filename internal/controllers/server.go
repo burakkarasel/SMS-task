@@ -28,6 +28,8 @@ func (server *Server) setRoutes() {
 	router := gin.Default()
 	router.POST("/api/v1/students", server.createStudent)
 	router.GET("/api/v1/students", server.listStudents)
+	router.PATCH("/api/v1/students/:id", server.updateStudent)
+	router.DELETE("/api/v1/students/:id", server.deleteStudent)
 
 	server.router = router
 }

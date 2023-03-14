@@ -27,6 +27,7 @@ func (q *Queries) CreateStudent(ctx context.Context, newStudent models.CreateStu
 	return student, err
 }
 
+// ListStudents list students with given parameters
 func (q *Queries) ListStudents(ctx context.Context, arg models.ListStudentsParams) ([]models.Student, error) {
 	query := `
 		SELECT id, full_name, year, department, email, created_at, updated_at
@@ -73,4 +74,47 @@ func (q *Queries) ListStudents(ctx context.Context, arg models.ListStudentsParam
 	}
 	// finally returning the slice and nil as error
 	return students, nil
+}
+
+// UpdateStudent updates the student by its id and given values
+func (q *Queries) UpdateStudent(ctx context.Context, arg models.UpdateStudentParams) (models.Student, error) {
+	stmt := `
+		UPDATE students
+		SET full_name = $1,
+    	year = $2,
+    	department = $3,
+    	email = $4,
+    	updated_at = NOW()
+		WHERE id = $5
+		RETURNING id, full_name, year, department, email, created_at, updated_at;
+		`
+
+	var student models.Student
+
+	row := q.db.QueryRowContext(ctx, stmt, arg.FullName, arg.Year, arg.Department, arg.Email, arg.Id)
+	err := row.Scan(
+		&student.Id,
+		&student.FullName,
+		&student.Year,
+		&student.Department,
+		&student.Email,
+		&student.CreatedAt,
+		&student.UpdatedAt,
+	)
+	return student, err
+}
+
+// DeleteStudent deletes student by given ID
+func (q *Queries) DeleteStudent(ctx context.Context, arg models.DeleteOneStudentParam) error {
+	stmt := `
+			DELETE FROM students
+			WHERE id = $1
+			RETURNING id
+		`
+
+	var id int
+
+	row := q.db.QueryRowContext(ctx, stmt, arg.Id)
+	err := row.Scan(&id)
+	return err
 }
