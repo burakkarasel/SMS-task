@@ -27,6 +27,7 @@ func NewServer(store database.Store) *Server {
 func (server *Server) setRoutes() {
 	router := gin.Default()
 	router.POST("/api/v1/students", server.createStudent)
+	router.GET("/api/v1/students", server.listStudents)
 
 	server.router = router
 }

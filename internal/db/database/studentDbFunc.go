@@ -5,6 +5,7 @@ import (
 	"github.com/burakkarasel/SMS-task/internal/models"
 )
 
+// CreateStudent creates a new student in DB
 func (q *Queries) CreateStudent(ctx context.Context, newStudent models.CreateStudentParams) (models.Student, error) {
 	stmt := `
 	INSERT INTO students (full_name, year, department, email)
@@ -24,4 +25,52 @@ func (q *Queries) CreateStudent(ctx context.Context, newStudent models.CreateStu
 		&student.UpdatedAt,
 	)
 	return student, err
+}
+
+func (q *Queries) ListStudents(ctx context.Context, arg models.ListStudentsParams) ([]models.Student, error) {
+	query := `
+		SELECT id, full_name, year, department, email, created_at, updated_at
+		FROM students
+		LIMIT $1
+		OFFSET $2
+	`
+
+	// first we execute the query
+	rows, err := q.db.QueryContext(ctx, query, arg.Limit, arg.Offset)
+	if err != nil {
+		return nil, err
+	}
+	// we defer closing rows
+	defer rows.Close()
+
+	// slice for holding the students data
+	students := []models.Student{}
+
+	// looping through the rows till there is none
+	for rows.Next() {
+		var tempStudent models.Student
+		// scan the current row and append it to array after checking errors
+		if err := rows.Scan(
+			&tempStudent.Id,
+			&tempStudent.FullName,
+			&tempStudent.Year,
+			&tempStudent.Department,
+			&tempStudent.Email,
+			&tempStudent.CreatedAt,
+			&tempStudent.UpdatedAt,
+		); err != nil {
+			return nil, err
+		}
+		students = append(students, tempStudent)
+	}
+	// closing the rows anyway
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	// checking if there is any error
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	// finally returning the slice and nil as error
+	return students, nil
 }
