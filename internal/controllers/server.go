@@ -17,7 +17,7 @@ func NewServer(store database.Store) *Server {
 	// first we create a new server with given Store
 	server := &Server{store: store}
 
-	// then we set the routes an return the server
+	// then we set the routes and return the server
 	server.setRoutes()
 
 	return server
@@ -26,10 +26,20 @@ func NewServer(store database.Store) *Server {
 // setRoutes sets routes for our service
 func (server *Server) setRoutes() {
 	router := gin.Default()
+
+	// students endpoint
 	router.POST("/api/v1/students", server.createStudent)
 	router.GET("/api/v1/students", server.listStudents)
+	router.GET("/api/v1/students/:id", server.getStudent)
 	router.PATCH("/api/v1/students/:id", server.updateStudent)
 	router.DELETE("/api/v1/students/:id", server.deleteStudent)
+
+	// classes endpoint
+	router.POST("/api/v1/classes", server.createClass)
+	router.GET("/api/v1/classes", server.listClasses)
+	router.GET("/api/v1/classes/:id", server.getClass)
+	router.PATCH("/api/v1/classes/:id", server.updateClass)
+	router.DELETE("/api/v1/classes/:id", server.deleteClass)
 
 	server.router = router
 }

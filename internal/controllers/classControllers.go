@@ -2,16 +2,15 @@ package controllers
 
 import (
 	"database/sql"
-	"fmt"
 	"github.com/burakkarasel/SMS-task/internal/models"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
 
-// createStudent handles post requests to create a new student
-func (server *Server) createStudent(ctx *gin.Context) {
+// createClass creates a new class in the DB
+func (server *Server) createClass(ctx *gin.Context) {
 	// creating request and response instances
-	var req models.CreateStudentApiParams
+	var req models.CreateClassApiParams
 	var res models.GenericResponse
 
 	// if inputs are not valid we return status bad request with the error
@@ -26,15 +25,13 @@ func (server *Server) createStudent(ctx *gin.Context) {
 		return
 	}
 
-	// then we create new CreateStudentParams to insert student into DB
-	arg := models.CreateStudentParams{
-		FullName:   req.FullName,
-		Year:       req.Year,
-		Department: req.Department,
-		Email:      req.Email,
+	// then we create new CreateClassParams to insert student into DB
+	arg := models.CreateClassParams{
+		Name:      req.Name,
+		Professor: req.Professor,
 	}
 
-	student, err := server.store.CreateStudent(ctx, arg)
+	class, err := server.store.CreateClass(ctx, arg)
 
 	// if any error occurs we return http internal server error with error
 	if err != nil {
@@ -53,16 +50,16 @@ func (server *Server) createStudent(ctx *gin.Context) {
 		Success:    true,
 		StatusCode: http.StatusCreated,
 		Messages:   []string{},
-		Data:       student,
+		Data:       class,
 	}
 	ctx.JSON(http.StatusCreated, generateResponse(res))
 	return
 }
 
-// listStudents list students with given params
-func (server *Server) listStudents(ctx *gin.Context) {
+// listClasses lists the classes with pagination
+func (server *Server) listClasses(ctx *gin.Context) {
 	// creating request and response instances
-	var req models.ListStudentsApiParams
+	var req models.ListClassesApiParams
 	var res models.GenericResponse
 
 	// if inputs are not valid we return status bad request with the error
@@ -77,13 +74,13 @@ func (server *Server) listStudents(ctx *gin.Context) {
 		return
 	}
 
-	// then we create a new ListStudentsParams to execute the DB operation
-	arg := models.ListStudentsParams{
-		Offset: (req.PageId - 1) * req.PageLimit,
+	// then we create new ListClassesParams to insert student into DB
+	arg := models.ListClassesParams{
 		Limit:  req.PageLimit,
+		Offset: (req.PageId - 1) * req.PageLimit,
 	}
 
-	students, err := server.store.ListStudents(ctx, arg)
+	classes, err := server.store.ListClasses(ctx, arg)
 
 	// if any error occurs we return http internal server error with error
 	if err != nil {
@@ -102,16 +99,16 @@ func (server *Server) listStudents(ctx *gin.Context) {
 		Success:    true,
 		StatusCode: http.StatusOK,
 		Messages:   []string{},
-		Data:       students,
+		Data:       classes,
 	}
 	ctx.JSON(http.StatusOK, generateResponse(res))
 	return
 }
 
-// getStudent gets one student from the DB
-func (server *Server) getStudent(ctx *gin.Context) {
+// getClass gets the class with the given ID from the DB
+func (server *Server) getClass(ctx *gin.Context) {
 	// creating request and response instances
-	var req models.GetOneStudentApiParam
+	var req models.GetOneClassApiParam
 	var res models.GenericResponse
 
 	if err := ctx.ShouldBindUri(&req); err != nil {
@@ -125,20 +122,21 @@ func (server *Server) getStudent(ctx *gin.Context) {
 		return
 	}
 
-	arg := models.GetOneStudentParam{
+	// then we create new UpdateClassParams to insert student into DB
+	arg := models.GetOneClassParam{
 		Id: req.Id,
 	}
 
-	student, err := server.store.GetStudent(ctx, arg)
+	class, err := server.store.GetClass(ctx, arg)
 
-	// if any error occurs we check the error
+	// if any error occurs we check for the error
 	if err != nil {
-		// if error equals to ErrNoRows we return 400
+		// if error is no rows error we return bad request
 		if err == sql.ErrNoRows {
 			res = models.GenericResponse{
 				Success:    false,
 				StatusCode: http.StatusBadRequest,
-				Messages:   []string{"Couldn't find Student with given ID"},
+				Messages:   []string{"Couldn't find class with given ID"},
 				Data:       nil,
 			}
 			ctx.JSON(http.StatusBadRequest, generateResponse(res))
@@ -159,21 +157,20 @@ func (server *Server) getStudent(ctx *gin.Context) {
 		Success:    true,
 		StatusCode: http.StatusOK,
 		Messages:   []string{},
-		Data:       student,
+		Data:       class,
 	}
 	ctx.JSON(http.StatusOK, generateResponse(res))
 	return
-
 }
 
-// updateStudent updates the student with given params
-func (server *Server) updateStudent(ctx *gin.Context) {
+// updateClass updates the class with given values
+func (server *Server) updateClass(ctx *gin.Context) {
 	// creating request and response instances
-	var reqBody models.UpdateStudentApiBodyParams
-	var reqUri models.UpdateStudentApiUriParam
+	var reqBody models.UpdateClassApiBodyParams
+	var reqUri models.UpdateClassApiUriParam
 	var res models.GenericResponse
 
-	// checking for both URI and JSON if inputs are not valid we return status bad request with the error
+	// if inputs are not valid we return status bad request with the error, we check both URI and json body
 	if err := ctx.ShouldBindJSON(&reqBody); err != nil {
 		res = models.GenericResponse{
 			Success:    false,
@@ -189,32 +186,30 @@ func (server *Server) updateStudent(ctx *gin.Context) {
 		res = models.GenericResponse{
 			Success:    false,
 			StatusCode: http.StatusBadRequest,
-			Messages:   []string{"Invalid Student ID"},
+			Messages:   []string{err.Error()},
 			Data:       nil,
 		}
 		ctx.JSON(http.StatusBadRequest, generateResponse(res))
 		return
 	}
 
-	// then we create a new UpdateStudentParams to execute the DB operation
-	arg := models.UpdateStudentParams{
-		Id:         reqUri.Id,
-		FullName:   reqBody.FullName,
-		Year:       reqBody.Year,
-		Department: reqBody.Department,
-		Email:      reqBody.Email,
+	// then we create new UpdateClassParams to insert student into DB
+	arg := models.UpdateClassParams{
+		Id:        reqUri.Id,
+		Name:      reqBody.Name,
+		Professor: reqBody.Professor,
 	}
 
-	student, err := server.store.UpdateStudent(ctx, arg)
+	class, err := server.store.UpdateClass(ctx, arg)
 
-	// if any error occurs we check the error
+	// if any error occurs we check for the error
 	if err != nil {
-		// if error equals to ErrNoRows we return 400
+		// if error is no rows error we return bad request
 		if err == sql.ErrNoRows {
 			res = models.GenericResponse{
 				Success:    false,
 				StatusCode: http.StatusBadRequest,
-				Messages:   []string{"Couldn't find Student with given ID"},
+				Messages:   []string{"Couldn't find class with given ID"},
 				Data:       nil,
 			}
 			ctx.JSON(http.StatusBadRequest, generateResponse(res))
@@ -235,20 +230,19 @@ func (server *Server) updateStudent(ctx *gin.Context) {
 		Success:    true,
 		StatusCode: http.StatusOK,
 		Messages:   []string{},
-		Data:       student,
+		Data:       class,
 	}
-	fmt.Println(res)
 	ctx.JSON(http.StatusOK, generateResponse(res))
 	return
 }
 
-// deleteStudent deletes student by given ID
-func (server *Server) deleteStudent(ctx *gin.Context) {
+// deleteClass deletes the class with given ID
+func (server *Server) deleteClass(ctx *gin.Context) {
 	// creating request and response instances
-	var req models.DeleteStudentApiParam
+	var req models.DeleteClassApiParam
 	var res models.GenericResponse
 
-	// if the input are not valid we return status bad request with the error
+	// if inputs are not valid we return status bad request with the error, we check both URI and json body
 	if err := ctx.ShouldBindUri(&req); err != nil {
 		res = models.GenericResponse{
 			Success:    false,
@@ -260,20 +254,21 @@ func (server *Server) deleteStudent(ctx *gin.Context) {
 		return
 	}
 
-	// then we create a new DeleteOneStudentParam to execute the DB operation
-	arg := models.DeleteOneStudentParam{
+	// then we create new UpdateClassParams to insert student into DB
+	arg := models.DeleteOneClassParam{
 		Id: req.Id,
 	}
 
-	err := server.store.DeleteStudent(ctx, arg)
+	err := server.store.DeleteClass(ctx, arg)
 
-	// if any error occurs we return http internal server error with error
+	// if any error occurs we check for the error
 	if err != nil {
+		// if error is no rows error we return bad request
 		if err == sql.ErrNoRows {
 			res = models.GenericResponse{
 				Success:    false,
 				StatusCode: http.StatusBadRequest,
-				Messages:   []string{"Couldn't find Student with given ID"},
+				Messages:   []string{"Couldn't find class with given ID"},
 				Data:       nil,
 			}
 			ctx.JSON(http.StatusBadRequest, generateResponse(res))
@@ -289,6 +284,7 @@ func (server *Server) deleteStudent(ctx *gin.Context) {
 		return
 	}
 
+	// finally we return no content with nil body
 	ctx.JSON(http.StatusNoContent, nil)
 	return
 }

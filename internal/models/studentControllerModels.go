@@ -31,3 +31,8 @@ type UpdateStudentApiUriParam struct {
 type DeleteStudentApiParam struct {
 	Id int `uri:"id" binding:"required,min=1"`
 }
+
+// GetOneStudentApiParam holds the ID of the student
+type GetOneStudentApiParam struct {
+	Id int `uri:"id" binding:"required,min=1"`
+}

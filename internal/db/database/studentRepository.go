@@ -76,6 +76,29 @@ func (q *Queries) ListStudents(ctx context.Context, arg models.ListStudentsParam
 	return students, nil
 }
 
+// GetStudent gets a single student with given ID
+func (q *Queries) GetStudent(ctx context.Context, arg models.GetOneStudentParam) (models.Student, error) {
+	query := `
+		SELECT id, full_name, year, department, email, created_at, updated_at
+		FROM students
+		WHERE id = $1
+		`
+
+	var student models.Student
+
+	row := q.db.QueryRowContext(ctx, query, arg.Id)
+	err := row.Scan(
+		&student.Id,
+		&student.FullName,
+		&student.Year,
+		&student.Department,
+		&student.Email,
+		&student.CreatedAt,
+		&student.UpdatedAt,
+	)
+	return student, err
+}
+
 // UpdateStudent updates the student by its id and given values
 func (q *Queries) UpdateStudent(ctx context.Context, arg models.UpdateStudentParams) (models.Student, error) {
 	stmt := `
