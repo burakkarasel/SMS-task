@@ -37,14 +37,14 @@ func (server *Server) createStudentClass(ctx *gin.Context) {
 	// if any error occurs we return http internal server error with error
 	if err != nil {
 		if pqErr, ok := err.(*pq.Error); ok {
-			if pqErr.Code.Name() == "foreign_key_violation" {
+			if pqErr.Code == "23505" {
 				res = models.GenericResponse{
 					Success:    false,
-					StatusCode: http.StatusBadRequest,
+					StatusCode: http.StatusConflict,
 					Messages:   []string{"Couldn't find data with given ID's"},
 					Data:       nil,
 				}
-				ctx.JSON(http.StatusBadRequest, generateResponse(res))
+				ctx.JSON(http.StatusConflict, generateResponse(res))
 				return
 			}
 		}
@@ -100,11 +100,11 @@ func (server *Server) getStudentClass(ctx *gin.Context) {
 		if err == sql.ErrNoRows {
 			res = models.GenericResponse{
 				Success:    false,
-				StatusCode: http.StatusBadRequest,
+				StatusCode: http.StatusNotFound,
 				Messages:   []string{"Couldn't find Student with given ID"},
 				Data:       nil,
 			}
-			ctx.JSON(http.StatusBadRequest, generateResponse(res))
+			ctx.JSON(http.StatusNotFound, generateResponse(res))
 			return
 		}
 		res = models.GenericResponse{
@@ -191,11 +191,11 @@ func (server *Server) listStudentClasses(ctx *gin.Context) {
 		if studentClasses.Student.Id == 0 {
 			res = models.GenericResponse{
 				Success:    false,
-				StatusCode: http.StatusBadRequest,
+				StatusCode: http.StatusNotFound,
 				Messages:   []string{"Student is not found with given ID"},
 				Data:       nil,
 			}
-			ctx.JSON(http.StatusBadRequest, generateResponse(res))
+			ctx.JSON(http.StatusNotFound, generateResponse(res))
 			return
 		}
 		// finally we generate the generic response and return it
@@ -232,11 +232,11 @@ func (server *Server) listStudentClasses(ctx *gin.Context) {
 	if classStudents.Class.Id == 0 {
 		res = models.GenericResponse{
 			Success:    false,
-			StatusCode: http.StatusBadRequest,
+			StatusCode: http.StatusNotFound,
 			Messages:   []string{"Class is not found with given ID"},
 			Data:       nil,
 		}
-		ctx.JSON(http.StatusBadRequest, generateResponse(res))
+		ctx.JSON(http.StatusNotFound, generateResponse(res))
 		return
 	}
 
@@ -279,11 +279,11 @@ func (server *Server) deleteStudentClass(ctx *gin.Context) {
 		if err == sql.ErrNoRows {
 			res = models.GenericResponse{
 				Success:    false,
-				StatusCode: http.StatusBadRequest,
+				StatusCode: http.StatusNotFound,
 				Messages:   []string{"Couldn't find Student with given ID"},
 				Data:       nil,
 			}
-			ctx.JSON(http.StatusBadRequest, generateResponse(res))
+			ctx.JSON(http.StatusNotFound, generateResponse(res))
 			return
 		}
 		res = models.GenericResponse{

@@ -135,11 +135,11 @@ func (server *Server) getClass(ctx *gin.Context) {
 		if err == sql.ErrNoRows {
 			res = models.GenericResponse{
 				Success:    false,
-				StatusCode: http.StatusBadRequest,
+				StatusCode: http.StatusNotFound,
 				Messages:   []string{"Couldn't find class with given ID"},
 				Data:       nil,
 			}
-			ctx.JSON(http.StatusBadRequest, generateResponse(res))
+			ctx.JSON(http.StatusNotFound, generateResponse(res))
 			return
 		}
 		res = models.GenericResponse{
@@ -208,11 +208,11 @@ func (server *Server) updateClass(ctx *gin.Context) {
 		if err == sql.ErrNoRows {
 			res = models.GenericResponse{
 				Success:    false,
-				StatusCode: http.StatusBadRequest,
+				StatusCode: http.StatusNotFound,
 				Messages:   []string{"Couldn't find class with given ID"},
 				Data:       nil,
 			}
-			ctx.JSON(http.StatusBadRequest, generateResponse(res))
+			ctx.JSON(http.StatusNotFound, generateResponse(res))
 			return
 		}
 		res = models.GenericResponse{
@@ -267,11 +267,11 @@ func (server *Server) deleteClass(ctx *gin.Context) {
 		if err == sql.ErrNoRows {
 			res = models.GenericResponse{
 				Success:    false,
-				StatusCode: http.StatusBadRequest,
+				StatusCode: http.StatusNotFound,
 				Messages:   []string{"Couldn't find class with given ID"},
 				Data:       nil,
 			}
-			ctx.JSON(http.StatusBadRequest, generateResponse(res))
+			ctx.JSON(http.StatusNotFound, generateResponse(res))
 			return
 		}
 		res = models.GenericResponse{

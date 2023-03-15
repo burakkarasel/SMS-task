@@ -138,11 +138,11 @@ func (server *Server) getStudent(ctx *gin.Context) {
 		if err == sql.ErrNoRows {
 			res = models.GenericResponse{
 				Success:    false,
-				StatusCode: http.StatusBadRequest,
+				StatusCode: http.StatusNotFound,
 				Messages:   []string{"Couldn't find Student with given ID"},
 				Data:       nil,
 			}
-			ctx.JSON(http.StatusBadRequest, generateResponse(res))
+			ctx.JSON(http.StatusNotFound, generateResponse(res))
 			return
 		}
 		res = models.GenericResponse{
@@ -214,11 +214,11 @@ func (server *Server) updateStudent(ctx *gin.Context) {
 		if err == sql.ErrNoRows {
 			res = models.GenericResponse{
 				Success:    false,
-				StatusCode: http.StatusBadRequest,
+				StatusCode: http.StatusNotFound,
 				Messages:   []string{"Couldn't find Student with given ID"},
 				Data:       nil,
 			}
-			ctx.JSON(http.StatusBadRequest, generateResponse(res))
+			ctx.JSON(http.StatusNotFound, generateResponse(res))
 			return
 		}
 		res = models.GenericResponse{
@@ -273,11 +273,11 @@ func (server *Server) deleteStudent(ctx *gin.Context) {
 		if err == sql.ErrNoRows {
 			res = models.GenericResponse{
 				Success:    false,
-				StatusCode: http.StatusBadRequest,
+				StatusCode: http.StatusNotFound,
 				Messages:   []string{"Couldn't find Student with given ID"},
 				Data:       nil,
 			}
-			ctx.JSON(http.StatusBadRequest, generateResponse(res))
+			ctx.JSON(http.StatusNotFound, generateResponse(res))
 			return
 		}
 		res = models.GenericResponse{
