@@ -1,19 +1,19 @@
 package controllers
 
 import (
-	"github.com/burakkarasel/SMS-task/internal/db/database"
+	db "github.com/burakkarasel/SMS-task/internal/db/database"
 	"github.com/burakkarasel/SMS-task/internal/models"
 	"github.com/gin-gonic/gin"
 )
 
 // Server serves HTTP requests and holds database connection
 type Server struct {
-	store  database.Store
+	store  db.Store
 	router *gin.Engine
 }
 
 // NewServer creates a new server with its dependencies
-func NewServer(store database.Store) *Server {
+func NewServer(store db.Store) *Server {
 	// first we create a new server with given Store
 	server := &Server{store: store}
 

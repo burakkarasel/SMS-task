@@ -4,7 +4,7 @@ import (
 	"database/sql"
 	"flag"
 	"github.com/burakkarasel/SMS-task/internal/controllers"
-	"github.com/burakkarasel/SMS-task/internal/db/database"
+	db "github.com/burakkarasel/SMS-task/internal/db/database"
 	"github.com/golang-migrate/migrate/v4"
 	_ "github.com/golang-migrate/migrate/v4/database/postgres"
 	_ "github.com/golang-migrate/migrate/v4/source/file"
@@ -25,7 +25,7 @@ func main() {
 	log.Println("Successfully connected to DB")
 	runDBMigration("file://internal/db/migration", *url)
 
-	store := database.NewStore(conn)
+	store := db.NewStore(conn)
 
 	server := controllers.NewServer(store)
 	log.Println("Starting at port: ", *port)
