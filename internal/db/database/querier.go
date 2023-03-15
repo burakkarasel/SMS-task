@@ -17,6 +17,12 @@ type Querier interface {
 	GetClass(ctx context.Context, arg models.GetOneClassParam) (models.Class, error)
 	UpdateClass(ctx context.Context, arg models.UpdateClassParams) (models.Class, error)
 	DeleteClass(ctx context.Context, arg models.DeleteOneClassParam) error
+
+	CreateStudentClass(ctx context.Context, newStudentClass models.CreateStudentClassParams) (models.StudentClassResponse, error)
+	ListStudentsOfClass(ctx context.Context, arg models.ListStudentsOfClassParams) (models.ClassStudentsResponse, error)
+	ListClassesOfStudent(ctx context.Context, arg models.ListClassesOfStudentParams) (models.StudentsClassesResponse, error)
+	GetStudentClass(ctx context.Context, arg models.GetOneStudentClassParam) (models.StudentClassResponse, error)
+	DeleteStudentClass(ctx context.Context, arg models.DeleteOneStudentClassParam) error
 }
 
 var _ Querier = (*Queries)(nil)

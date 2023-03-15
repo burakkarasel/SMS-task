@@ -41,6 +41,12 @@ func (server *Server) setRoutes() {
 	router.PATCH("/api/v1/classes/:id", server.updateClass)
 	router.DELETE("/api/v1/classes/:id", server.deleteClass)
 
+	// studentClasses endpoint
+	router.POST("/api/v1/studentClasses", server.createStudentClass)
+	router.GET("/api/v1/studentClasses", server.listStudentClasses)
+	router.GET("/api/v1/studentClasses/:studentClassId", server.getStudentClass)
+	router.DELETE("/api/v1/studentClasses/:studentClassId", server.deleteStudentClass)
+
 	server.router = router
 }
 

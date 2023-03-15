@@ -26,7 +26,7 @@ func (server *Server) createStudent(ctx *gin.Context) {
 		return
 	}
 
-	// then we create new CreateStudentParams to insert student into DB
+	// then we create new CreateStudentParams
 	arg := models.CreateStudentParams{
 		FullName:   req.FullName,
 		Year:       req.Year,
@@ -77,7 +77,7 @@ func (server *Server) listStudents(ctx *gin.Context) {
 		return
 	}
 
-	// then we create a new ListStudentsParams to execute the DB operation
+	// then we create a new ListStudentsParams
 	arg := models.ListStudentsParams{
 		Offset: (req.PageId - 1) * req.PageLimit,
 		Limit:  req.PageLimit,
@@ -125,6 +125,7 @@ func (server *Server) getStudent(ctx *gin.Context) {
 		return
 	}
 
+	// then we create a new GetOneStudentParam
 	arg := models.GetOneStudentParam{
 		Id: req.Id,
 	}
@@ -196,7 +197,7 @@ func (server *Server) updateStudent(ctx *gin.Context) {
 		return
 	}
 
-	// then we create a new UpdateStudentParams to execute the DB operation
+	// then we create a new UpdateStudentParams
 	arg := models.UpdateStudentParams{
 		Id:         reqUri.Id,
 		FullName:   reqBody.FullName,
@@ -260,7 +261,7 @@ func (server *Server) deleteStudent(ctx *gin.Context) {
 		return
 	}
 
-	// then we create a new DeleteOneStudentParam to execute the DB operation
+	// then we create a new DeleteOneStudentParam
 	arg := models.DeleteOneStudentParam{
 		Id: req.Id,
 	}
