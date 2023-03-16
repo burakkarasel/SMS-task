@@ -15,12 +15,7 @@ func (server *Server) createClass(ctx *gin.Context) {
 
 	// if inputs are not valid we return status bad request with the error
 	if err := ctx.ShouldBindJSON(&req); err != nil {
-		res = models.GenericResponse{
-			Success:    false,
-			StatusCode: http.StatusBadRequest,
-			Messages:   []string{err.Error()},
-			Data:       nil,
-		}
+		res = models.CreateGenericResponse(false, http.StatusBadRequest, err.Error(), nil)
 		ctx.JSON(http.StatusBadRequest, generateResponse(res))
 		return
 	}
@@ -35,23 +30,13 @@ func (server *Server) createClass(ctx *gin.Context) {
 
 	// if any error occurs we return http internal server error with error
 	if err != nil {
-		res = models.GenericResponse{
-			Success:    false,
-			StatusCode: http.StatusInternalServerError,
-			Messages:   []string{err.Error()},
-			Data:       nil,
-		}
+		res = models.CreateGenericResponse(false, http.StatusInternalServerError, err.Error(), nil)
 		ctx.JSON(http.StatusInternalServerError, generateResponse(res))
 		return
 	}
 
 	// finally we generate the generic response and return it
-	res = models.GenericResponse{
-		Success:    true,
-		StatusCode: http.StatusCreated,
-		Messages:   []string{},
-		Data:       class,
-	}
+	res = models.CreateGenericResponse(true, http.StatusCreated, "", class)
 	ctx.JSON(http.StatusCreated, generateResponse(res))
 	return
 }
@@ -64,12 +49,7 @@ func (server *Server) listClasses(ctx *gin.Context) {
 
 	// if inputs are not valid we return status bad request with the error
 	if err := ctx.ShouldBindQuery(&req); err != nil {
-		res = models.GenericResponse{
-			Success:    false,
-			StatusCode: http.StatusBadRequest,
-			Messages:   []string{err.Error()},
-			Data:       nil,
-		}
+		res = models.CreateGenericResponse(false, http.StatusBadRequest, err.Error(), nil)
 		ctx.JSON(http.StatusBadRequest, generateResponse(res))
 		return
 	}
@@ -84,23 +64,13 @@ func (server *Server) listClasses(ctx *gin.Context) {
 
 	// if any error occurs we return http internal server error with error
 	if err != nil {
-		res = models.GenericResponse{
-			Success:    false,
-			StatusCode: http.StatusInternalServerError,
-			Messages:   []string{err.Error()},
-			Data:       nil,
-		}
+		res = models.CreateGenericResponse(false, http.StatusInternalServerError, err.Error(), nil)
 		ctx.JSON(http.StatusInternalServerError, generateResponse(res))
 		return
 	}
 
 	// finally we generate the generic response and return it
-	res = models.GenericResponse{
-		Success:    true,
-		StatusCode: http.StatusOK,
-		Messages:   []string{},
-		Data:       classes,
-	}
+	res = models.CreateGenericResponse(true, http.StatusOK, "", classes)
 	ctx.JSON(http.StatusOK, generateResponse(res))
 	return
 }
@@ -112,12 +82,7 @@ func (server *Server) getClass(ctx *gin.Context) {
 	var res models.GenericResponse
 
 	if err := ctx.ShouldBindUri(&req); err != nil {
-		res = models.GenericResponse{
-			Success:    false,
-			StatusCode: http.StatusBadRequest,
-			Messages:   []string{err.Error()},
-			Data:       nil,
-		}
+		res = models.CreateGenericResponse(false, http.StatusBadRequest, err.Error(), nil)
 		ctx.JSON(http.StatusBadRequest, generateResponse(res))
 		return
 	}
@@ -133,32 +98,17 @@ func (server *Server) getClass(ctx *gin.Context) {
 	if err != nil {
 		// if error is no rows error we return bad request
 		if err == sql.ErrNoRows {
-			res = models.GenericResponse{
-				Success:    false,
-				StatusCode: http.StatusNotFound,
-				Messages:   []string{"Couldn't find class with given ID"},
-				Data:       nil,
-			}
+			res = models.CreateGenericResponse(false, http.StatusNotFound, "Couldn't find class with given ID", nil)
 			ctx.JSON(http.StatusNotFound, generateResponse(res))
 			return
 		}
-		res = models.GenericResponse{
-			Success:    false,
-			StatusCode: http.StatusInternalServerError,
-			Messages:   []string{err.Error()},
-			Data:       nil,
-		}
+		res = models.CreateGenericResponse(false, http.StatusInternalServerError, err.Error(), nil)
 		ctx.JSON(http.StatusInternalServerError, generateResponse(res))
 		return
 	}
 
 	// finally we generate the generic response and return it
-	res = models.GenericResponse{
-		Success:    true,
-		StatusCode: http.StatusOK,
-		Messages:   []string{},
-		Data:       class,
-	}
+	res = models.CreateGenericResponse(true, http.StatusOK, "", class)
 	ctx.JSON(http.StatusOK, generateResponse(res))
 	return
 }
@@ -172,23 +122,13 @@ func (server *Server) updateClass(ctx *gin.Context) {
 
 	// if inputs are not valid we return status bad request with the error, we check both URI and json body
 	if err := ctx.ShouldBindJSON(&reqBody); err != nil {
-		res = models.GenericResponse{
-			Success:    false,
-			StatusCode: http.StatusBadRequest,
-			Messages:   []string{err.Error()},
-			Data:       nil,
-		}
+		res = models.CreateGenericResponse(false, http.StatusBadRequest, err.Error(), nil)
 		ctx.JSON(http.StatusBadRequest, generateResponse(res))
 		return
 	}
 
 	if err := ctx.ShouldBindUri(&reqUri); err != nil {
-		res = models.GenericResponse{
-			Success:    false,
-			StatusCode: http.StatusBadRequest,
-			Messages:   []string{err.Error()},
-			Data:       nil,
-		}
+		res = models.CreateGenericResponse(false, http.StatusBadRequest, err.Error(), nil)
 		ctx.JSON(http.StatusBadRequest, generateResponse(res))
 		return
 	}
@@ -206,32 +146,17 @@ func (server *Server) updateClass(ctx *gin.Context) {
 	if err != nil {
 		// if error is no rows error we return bad request
 		if err == sql.ErrNoRows {
-			res = models.GenericResponse{
-				Success:    false,
-				StatusCode: http.StatusNotFound,
-				Messages:   []string{"Couldn't find class with given ID"},
-				Data:       nil,
-			}
+			res = models.CreateGenericResponse(false, http.StatusNotFound, "Couldn't find class with given ID", nil)
 			ctx.JSON(http.StatusNotFound, generateResponse(res))
 			return
 		}
-		res = models.GenericResponse{
-			Success:    false,
-			StatusCode: http.StatusInternalServerError,
-			Messages:   []string{err.Error()},
-			Data:       nil,
-		}
+		res = models.CreateGenericResponse(false, http.StatusInternalServerError, err.Error(), nil)
 		ctx.JSON(http.StatusInternalServerError, generateResponse(res))
 		return
 	}
 
 	// finally we generate the generic response and return it
-	res = models.GenericResponse{
-		Success:    true,
-		StatusCode: http.StatusOK,
-		Messages:   []string{},
-		Data:       class,
-	}
+	res = models.CreateGenericResponse(true, http.StatusOK, "", class)
 	ctx.JSON(http.StatusOK, generateResponse(res))
 	return
 }
@@ -244,12 +169,7 @@ func (server *Server) deleteClass(ctx *gin.Context) {
 
 	// if inputs are not valid we return status bad request with the error, we check both URI and json body
 	if err := ctx.ShouldBindUri(&req); err != nil {
-		res = models.GenericResponse{
-			Success:    false,
-			StatusCode: http.StatusBadRequest,
-			Messages:   []string{err.Error()},
-			Data:       nil,
-		}
+		res = models.CreateGenericResponse(false, http.StatusBadRequest, err.Error(), nil)
 		ctx.JSON(http.StatusBadRequest, generateResponse(res))
 		return
 	}
@@ -265,21 +185,11 @@ func (server *Server) deleteClass(ctx *gin.Context) {
 	if err != nil {
 		// if error is no rows error we return bad request
 		if err == sql.ErrNoRows {
-			res = models.GenericResponse{
-				Success:    false,
-				StatusCode: http.StatusNotFound,
-				Messages:   []string{"Couldn't find class with given ID"},
-				Data:       nil,
-			}
+			res = models.CreateGenericResponse(false, http.StatusNotFound, "Couldn't find class with given ID", nil)
 			ctx.JSON(http.StatusNotFound, generateResponse(res))
 			return
 		}
-		res = models.GenericResponse{
-			Success:    false,
-			StatusCode: http.StatusInternalServerError,
-			Messages:   []string{err.Error()},
-			Data:       nil,
-		}
+		res = models.CreateGenericResponse(false, http.StatusInternalServerError, err.Error(), nil)
 		ctx.JSON(http.StatusInternalServerError, generateResponse(res))
 		return
 	}
