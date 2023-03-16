@@ -17,3 +17,5 @@
 *.sh
 .idea
 .vscode
+Dockerfile
+docker-compose.yml
