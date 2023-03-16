@@ -65,37 +65,7 @@ make test
 
 ### Start App
 
-- Create a Dockerfile.
-
-```
-# Build Stage
-FROM golang:1.20-alpine AS builder
-WORKDIR /app
-COPY . .
-RUN go build -o main cmd/web/main.go
-
-# Run stage
-FROM alpine:3.16
-WORKDIR /app
-COPY --from=builder /app/main .
-COPY /internal/db/migration ./internal/db/migration
-
-EXPOSE 8080
-CMD ./main -url=postgresql://postgresql://{user}:{password}@{db url}/{db name}?sslmode=disable -port=0.0.0.0:8080
-```
-
-- Create a docker-compose.yml file.
-
-```
-services:
-  api:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    ports:
-      - "80:80"
-    command: ./main -url=postgresql://kullop:TwvU5euWR0DoffTvpCKO@sms-task.ct4mxefnosgh.us-east-1.rds.amazonaws.com:5432/sms_task?sslmode=disable -port=0.0.0.0:80
-```
+- Create a Dockerfiles.
 
 - Run the app.
 

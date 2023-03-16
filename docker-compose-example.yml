@@ -1,0 +1,8 @@
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    command: ./main -url=postgresql://postgresql://{user}:{password}@{db url}/{db name}?sslmode=disable -port=0.0.0.0:80
