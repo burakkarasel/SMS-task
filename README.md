@@ -93,8 +93,8 @@ services:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "8080:8080"
-    command: ./main -url=postgresql://kullop:TwvU5euWR0DoffTvpCKO@sms-task.ct4mxefnosgh.us-east-1.rds.amazonaws.com:5432/sms_task?sslmode=disable -port=0.0.0.0:8080
+      - "80:80"
+    command: ./main -url=postgresql://kullop:TwvU5euWR0DoffTvpCKO@sms-task.ct4mxefnosgh.us-east-1.rds.amazonaws.com:5432/sms_task?sslmode=disable -port=0.0.0.0:80
 ```
 
 - Run the app.
@@ -105,57 +105,8 @@ docker compose up
 
 ### Give it a try
 
-#### Routes
+- You can check out the endpoints with inputs via PostMan by opening [this](SMS-Task.postman_collection.json)
 
-- Base URL: _http://localhost:8080/api/v1/_
-
-##### Endpoint: /students
-
-##### Endpoint: /classes
-
-Creates a new class with the provided name and professor.
-
-Request Body
-The request body must be a JSON object containing the following fields:
-
-```
-name	string	The name of the class. Required, minimum length of 2.
-professor	string	The name of the professor of the class. Required, minimum length of 4.
-```
-
-Example:
-
-```
-{
-"name": "Math 101",
-"professor": "John Doe"
-}
-```
-
-Success Response
-If the class is created successfully, the server will respond with HTTP status code 201 Created and a JSON object representing the created class.
-
-```
-{
-"success": true,
-"code": 201,
-"message": "",
-"data": {
-"id": 1,
-"name": "Math 101",
-"professor": "John Doe",
-"createdAt": "2023-03-14T10:30:00Z",
-"updatedAt": "2023-03-14T10:30:00Z"
-}
-}
-```
-Error Response
-If there is an error creating the class, the server will respond with an HTTP status code indicating the type of error that occurred and a JSON object containing an error message.
-
-```
-Invalid Request Body	400 Bad Request	{"success":false,"code":400,"message":"<error message>","data":null}
-Internal Server Error	500 Internal Server Error	{"success":false,"code":500,"message":"<error message>","data":null}
-```
 [Back To The Top](#sms-task)
 
 ---

@@ -1,0 +1,339 @@
+{
+	"info": {
+		"_postman_id": "0ceb6c1a-8465-4804-a9c0-55bdc8af7f92",
+		"name": "SMS-Task",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "21428220"
+	},
+	"item": [
+		{
+			"name": "Create Student",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"fullName\": \"burak\",\n    \"year\": 4,\n    \"department\": \"medicine\",\n    \"email\": \"burak@here.com\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL}}/students",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"students"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List Students",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{URL}}/students?pageId=1&pageLimit=5",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"students"
+					],
+					"query": [
+						{
+							"key": "pageId",
+							"value": "1"
+						},
+						{
+							"key": "pageLimit",
+							"value": "5"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Student By ID",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"fullName\": \"onur\",\n    \"year\": 2,\n    \"department\": \"devops\",\n    \"email\": \"onur@here.com\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL}}/students/3",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"students",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Student By ID",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{URL}}/students/4",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"students",
+						"4"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Class",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Introduction to Engineering\",\n    \"professor\": \"Prof Wolovitz\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL}}/classes",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"classes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Class By ID",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Introduction to Medicine\",\n    \"professor\": \"Prof Douchbag\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL}}/classes/1",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"classes",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List Classes",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{URL}}/classes?pageId=1&pageLimit=5",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"classes"
+					],
+					"query": [
+						{
+							"key": "pageId",
+							"value": "1"
+						},
+						{
+							"key": "pageLimit",
+							"value": "5"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Class By ID",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{URL}}/classes/1",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"classes",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Class By ID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{URL}}/classes/2",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"classes",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Student By ID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{URL}}/students/5",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"students",
+						"5"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Student Class",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"studentId\": 2,\n    \"classId\": 2\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL}}/studentClasses",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"studentClasses"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Student Class By ID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{URL}}/studentClasses/2",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"studentClasses",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List Classes of a Student",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{URL}}/studentClasses?studentId=2&pageId=1&pageLimit=5&classId=0",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"studentClasses"
+					],
+					"query": [
+						{
+							"key": "studentId",
+							"value": "2"
+						},
+						{
+							"key": "pageId",
+							"value": "1"
+						},
+						{
+							"key": "pageLimit",
+							"value": "5"
+						},
+						{
+							"key": "classId",
+							"value": "0"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Student Class By ID",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{URL}}/studentClasses/2",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"studentClasses",
+						"2"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
