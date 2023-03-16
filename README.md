@@ -54,7 +54,7 @@ SMS Task is a Student Management System tool.
 ```
 #!/bin/bash
 
-go test -cover -url="postgresql://{user}:{password}@{db url}/{db name}?sslmode=disable"
+go test ./... -cover -url="postgresql://{user}:{password}@{db url}/{db name}?sslmode=disable"
 ```
 
 - Then you can run make test command.
@@ -65,7 +65,7 @@ make test
 
 ### Start App
 
-- Create a Dockerfiles.
+- Create Dockerfile and Docker Compose file.
 
 - Run the app.
 
