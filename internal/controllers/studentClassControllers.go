@@ -134,7 +134,7 @@ func (server *Server) listStudentClasses(ctx *gin.Context) {
 			return
 		}
 		// finally we generate the generic response and return it
-		res = models.CreateGenericResponse(true, http.StatusCreated, "", studentClasses)
+		res = models.CreateGenericResponse(true, http.StatusOK, "", studentClasses)
 		ctx.JSON(http.StatusOK, generateResponse(res))
 		return
 	}
