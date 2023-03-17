@@ -9,9 +9,11 @@ import (
 	"time"
 )
 
+// MockStore lets us mock our DB while testing the controllers, by implementing the Store interface
 type MockStore struct {
 }
 
+// CreateClass mocks the CreateClass function
 func (mock MockStore) CreateClass(_ context.Context, arg models.CreateClassParams) (models.Class, error) {
 	if arg.Name == "YOLO" {
 		return models.Class{}, sql.ErrConnDone
@@ -19,6 +21,7 @@ func (mock MockStore) CreateClass(_ context.Context, arg models.CreateClassParam
 	return models.Class{Id: 5, Name: arg.Name, Professor: arg.Professor, CreatedAt: time.Now(), UpdatedAt: time.Now()}, nil
 }
 
+// ListClasses mocks the ListClasses function
 func (mock MockStore) ListClasses(_ context.Context, arg models.ListClassesParams) ([]models.Class, error) {
 	if arg.Limit == 17 {
 		return nil, sql.ErrConnDone
@@ -30,6 +33,7 @@ func (mock MockStore) ListClasses(_ context.Context, arg models.ListClassesParam
 	return classes, nil
 }
 
+// UpdateClass mocks the UpdateClass function
 func (mock MockStore) UpdateClass(_ context.Context, arg models.UpdateClassParams) (models.Class, error) {
 	if arg.Name == "YOLO" {
 		return models.Class{}, sql.ErrConnDone
@@ -44,6 +48,7 @@ func (mock MockStore) UpdateClass(_ context.Context, arg models.UpdateClassParam
 	return classToUpdate, nil
 }
 
+// GetClass mocks the GetClass function
 func (mock MockStore) GetClass(_ context.Context, arg models.GetOneClassParam) (models.Class, error) {
 	if arg.Id == 17 {
 		return models.Class{}, sql.ErrConnDone
@@ -54,6 +59,7 @@ func (mock MockStore) GetClass(_ context.Context, arg models.GetOneClassParam) (
 	return util.RandomClass(), nil
 }
 
+// DeleteClass mocks the DeleteClass function
 func (mock MockStore) DeleteClass(_ context.Context, arg models.DeleteOneClassParam) error {
 	if arg.Id == 17 {
 		return sql.ErrConnDone
@@ -64,6 +70,7 @@ func (mock MockStore) DeleteClass(_ context.Context, arg models.DeleteOneClassPa
 	return nil
 }
 
+// CreateStudent mocks the CreateStudent function
 func (mock MockStore) CreateStudent(_ context.Context, arg models.CreateStudentParams) (models.Student, error) {
 	if arg.FullName == "YOLO" {
 		return models.Student{}, sql.ErrConnDone
@@ -78,6 +85,7 @@ func (mock MockStore) CreateStudent(_ context.Context, arg models.CreateStudentP
 		UpdatedAt:  time.Now()}, nil
 }
 
+// ListStudents mocks the ListStudents function
 func (mock MockStore) ListStudents(_ context.Context, arg models.ListStudentsParams) ([]models.Student, error) {
 	if arg.Limit == 17 {
 		return nil, sql.ErrConnDone
@@ -89,6 +97,7 @@ func (mock MockStore) ListStudents(_ context.Context, arg models.ListStudentsPar
 	return students, nil
 }
 
+// GetStudent mocks the GetStudent function
 func (mock MockStore) GetStudent(_ context.Context, arg models.GetOneStudentParam) (models.Student, error) {
 	if arg.Id == 17 {
 		return models.Student{}, sql.ErrConnDone
@@ -100,6 +109,7 @@ func (mock MockStore) GetStudent(_ context.Context, arg models.GetOneStudentPara
 	return util.RandomStudent(), nil
 }
 
+// UpdateStudent mocks the UpdateStudent function
 func (mock MockStore) UpdateStudent(_ context.Context, arg models.UpdateStudentParams) (models.Student, error) {
 	if arg.FullName == "YOLO" {
 		return models.Student{}, sql.ErrConnDone
@@ -116,6 +126,7 @@ func (mock MockStore) UpdateStudent(_ context.Context, arg models.UpdateStudentP
 	return studentToUpdate, nil
 }
 
+// DeleteStudent mocks the DeleteStudent function
 func (mock MockStore) DeleteStudent(_ context.Context, arg models.DeleteOneStudentParam) error {
 	if arg.Id == 17 {
 		return sql.ErrConnDone
@@ -126,6 +137,7 @@ func (mock MockStore) DeleteStudent(_ context.Context, arg models.DeleteOneStude
 	return nil
 }
 
+// CreateStudentClass mocks the CreateStudentClass function
 func (mock MockStore) CreateStudentClass(_ context.Context, arg models.CreateStudentClassParams) (models.StudentClassResponse, error) {
 	if arg.StudentId == 17 {
 		return models.StudentClassResponse{}, sql.ErrConnDone
@@ -136,6 +148,7 @@ func (mock MockStore) CreateStudentClass(_ context.Context, arg models.CreateStu
 	return util.RandomStudentClassResponse(), nil
 }
 
+// GetStudentClass mocks the GetStudentClass function
 func (mock MockStore) GetStudentClass(_ context.Context, arg models.GetOneStudentClassParam) (models.StudentClassResponse, error) {
 	if arg.StudentClassId == 17 {
 		return models.StudentClassResponse{}, sql.ErrConnDone
@@ -146,6 +159,7 @@ func (mock MockStore) GetStudentClass(_ context.Context, arg models.GetOneStuden
 	return util.RandomStudentClassResponse(), nil
 }
 
+// ListClassesOfStudent mocks the ListClassesOfStudent function
 func (mock MockStore) ListClassesOfStudent(_ context.Context, arg models.ListClassesOfStudentParams) (models.StudentsClassesResponse, error) {
 	if arg.StudentId == 17 {
 		return models.StudentsClassesResponse{}, sql.ErrConnDone
@@ -156,6 +170,7 @@ func (mock MockStore) ListClassesOfStudent(_ context.Context, arg models.ListCla
 	return util.RandomStudentClassesResponse(), nil
 }
 
+// ListStudentsOfClass mocks the ListStudentsOfClass function
 func (mock MockStore) ListStudentsOfClass(_ context.Context, arg models.ListStudentsOfClassParams) (models.ClassStudentsResponse, error) {
 	if arg.ClassId == 17 {
 		return models.ClassStudentsResponse{}, sql.ErrConnDone
@@ -166,6 +181,7 @@ func (mock MockStore) ListStudentsOfClass(_ context.Context, arg models.ListStud
 	return util.RandomClassStudentsResponse(), nil
 }
 
+// DeleteStudentClass mocks the DeleteStudentClass function
 func (mock MockStore) DeleteStudentClass(_ context.Context, arg models.DeleteOneStudentClassParam) error {
 	if arg.StudentClassId == 17 {
 		return sql.ErrConnDone

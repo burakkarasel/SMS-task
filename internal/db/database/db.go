@@ -5,6 +5,7 @@ import (
 	"database/sql"
 )
 
+// DBTX implements the database/sql functions we need
 type DBTX interface {
 	ExecContext(context.Context, string, ...interface{}) (sql.Result, error)
 	PrepareContext(context.Context, string) (*sql.Stmt, error)
@@ -12,16 +13,12 @@ type DBTX interface {
 	QueryRowContext(context.Context, string, ...interface{}) *sql.Row
 }
 
+// New Creates a new instance of Queries
 func New(db DBTX) *Queries {
 	return &Queries{db: db}
 }
 
+// Queries holds the DBTX interface in it, which consist of the database/sql functions we need
 type Queries struct {
 	db DBTX
-}
-
-func (q *Queries) WithTx(tx *sql.Tx) *Queries {
-	return &Queries{
-		db: tx,
-	}
 }

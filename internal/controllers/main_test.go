@@ -9,7 +9,7 @@ import (
 )
 
 // newTestServer creates a new test server for our tests
-func newTestServer(t *testing.T, store db.Store) *Server {
+func newTestServer(_ *testing.T, store db.Store) *Server {
 	server := NewServer(store)
 	return server
 }

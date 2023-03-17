@@ -5,6 +5,7 @@ import (
 	"github.com/burakkarasel/SMS-task/internal/models"
 )
 
+// Querier implements the DB function we wrote for the project
 type Querier interface {
 	CreateStudent(ctx context.Context, newStudent models.CreateStudentParams) (models.Student, error)
 	ListStudents(ctx context.Context, arg models.ListStudentsParams) ([]models.Student, error)
@@ -25,4 +26,5 @@ type Querier interface {
 	DeleteStudentClass(ctx context.Context, arg models.DeleteOneStudentClassParam) error
 }
 
-var _ Querier = (*Queries)(nil)
+// this variable is a flag for me to remind that if I implement the Querier interface or not
+var _ Querier = &Queries{}
